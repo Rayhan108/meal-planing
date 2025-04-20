@@ -1,0 +1,21 @@
+.fontHotel {
+    font-family: var(--font-grand-hotel), sans-serif; /* Use Grand Hotel font */
+  }
+  
+  .fontRozha {
+    font-family: var(--font-rozha-one), serif; /* Use Rozha One font */
+  }
+  
+  .fontPopins {
+    font-family: var(--font-poppins), sans-serif; /* Use Poppins font */
+  }
+  
+  .fontJost {
+    font-family: var(--font-jost), sans-serif; /* Use Jost font */
+  }
+  .fontInter {
+    font-family: var(--font-inter), sans-serif; /* Use Jost font */
+  }
+  .fontJosefin {
+    font-family: var(--font-josefin-sans), sans-serif; /* Use Josefin Sans font */
+  }

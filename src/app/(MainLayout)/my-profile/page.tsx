@@ -1,7 +1,7 @@
 'use client'
 
-import { Input, Form, Button, notification, Space } from 'antd';
-import { UserOutlined, MailOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
+import { Input, Form,  notification, Space } from 'antd';
+import { UserOutlined, MailOutlined, PhoneOutlined} from '@ant-design/icons';
 
 const CustomerProfile = () => {
   const [form] = Form.useForm();

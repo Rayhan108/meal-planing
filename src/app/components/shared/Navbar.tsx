@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Drawer } from "antd";
 import Image from "next/image";
-import logo from "@/app/asset/logo.png";
+import logo from "@/asset/logo.png";
 import style from "@/app/styles.module.css";
 import { usePathname } from "next/navigation";
 export default function Navbar() {
@@ -18,7 +18,8 @@ export default function Navbar() {
   // const [kidsClubMobileDropdownOpen, setKidsClubMobileDropdownOpen] =
   //   useState(false);
   const pathname = usePathname();
-
+  const role = "user";
+  const isCustomer = role.startsWith("customer");
   const showDrawer = () => setOpen(true);
   const onClose = () => setOpen(false);
 
@@ -78,7 +79,7 @@ export default function Navbar() {
             ORDER MEAL
           </Link>
           <Link
-            href="/customer"
+          href={isCustomer ? "/trackOrder" : "/viewOrder"}
             className={`md:text-sm text-xs xl:text-xl  text-white hover:text-white/80 ${style.fontInter}`}
           >
             DASHBOARD

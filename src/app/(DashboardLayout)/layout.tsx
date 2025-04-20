@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import logo from "@/app/asset/logo.png";
+import logo from "@/asset/logo.png";
 import { MapPinHouse, FolderCog } from "lucide-react";
 import Image from "next/image";
 const DashboardLayout = ({

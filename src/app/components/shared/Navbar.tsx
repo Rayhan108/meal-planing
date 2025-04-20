@@ -70,9 +70,7 @@ export default function Navbar() {
           >
           FIND MEALS
           </Link>
-          {/* <Link href="/book-registry" className="text-sm font-medium text-white hover:text-white/80">
-            BOOK REGISTRY
-          </Link> */}
+
           <Link
             href="/orderMeal"
             className={`md:text-sm text-xs xl:text-xl  text-white hover:text-white/80 ${style.fontInter}`}
@@ -80,7 +78,7 @@ export default function Navbar() {
             ORDER MEAL
           </Link>
           <Link
-            href="/dashboard"
+            href="/customer"
             className={`md:text-sm text-xs xl:text-xl  text-white hover:text-white/80 ${style.fontInter}`}
           >
             DASHBOARD
@@ -165,29 +163,33 @@ export default function Navbar() {
               Home
             </Link> 
    
-            {/* <Link href="/book-registry" className="text-sm font-medium text-white hover:text-white/80">
-            BOOK REGISTRY
-          </Link> */}
+     
             <Link
-              href="/about"
+              href="/findMeals"
               onClick={onClose}
               passHref
-              className={`md:text-sm text-sm xl:text-xl  text-white hover:text-white/80  ${style.fontJosefin} ${pathname === "/about" ? "text-yellow-400" : ""} `}
+              className={`md:text-sm text-sm xl:text-xl  text-white hover:text-white/80  ${style.fontJosefin} ${pathname === "/findMeals" ? "text-yellow-400" : ""} `}
             >
               FIND MEALS
             </Link>
             <Link
-              href="/contact"
+              href="/orderMeal"
               onClick={onClose}
               passHref
-              className={`md:text-sm text-sm xl:text-xl  text-white hover:text-white/80  ${style.fontJosefin} ${pathname === "/contact" ? "text-yellow-400" : ""}`}
+              className={`md:text-sm text-sm xl:text-xl  text-white hover:text-white/80  ${style.fontJosefin} ${pathname === "/orderMeal" ? "text-yellow-400" : ""}`}
             >
               ORDER MEAL
             </Link>
-
-            <p className={`text-[#FAF397] tracking-widest font-bold uppercase text-sm ${style.fontJosefin}`}>
+            <Link
+              href="/dasboard"
+              onClick={onClose}
+              passHref
+              className={`md:text-sm text-sm xl:text-xl  text-white hover:text-white/80  ${style.fontJosefin} ${pathname === "/dashboard" ? "text-yellow-400" : ""}`}
+            >
               DASHBOARD
-            </p>
+            </Link>
+
+           
 
          <p className={`text-[#FAF397] tracking-widest font-bold text-sm uppercase ${style.fontJosefin}`}>
               More

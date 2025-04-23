@@ -1,43 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import { useState } from 'react';
-import { Form, Input, Button, Select, DatePicker, TimePicker, notification, Space } from 'antd';
+import { Form, Input, Select, notification, Space } from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons';
-import dayjs, { Dayjs } from 'dayjs'; // Import dayjs for handling date/time
 
 const { Option } = Select;
 
 const OrderMeal = () => {
   const [meal, setMeal] = useState<string | undefined>();
   const [extras, setExtras] = useState<string[]>([]);
-  const [deliveryDate, setDeliveryDate] = useState<string | undefined>();
-  const [deliveryTime, setDeliveryTime] = useState<string | undefined>();
+  const [dietary, setDietary] = useState<string[]>([]);
 
-  const onMealChange = (value: string) => {
-    setMeal(value);
-  };
-
-  const onExtrasChange = (value: string[]) => {
-    setExtras(value);
-  };
-
-  // Handle Date change
-  const onDeliveryDateChange = (date: Dayjs | null, dateString: string | string[]) => {
-    if (Array.isArray(dateString)) {
-      setDeliveryDate(dateString[0]); // Take the first value if it's an array
-    } else {
-      setDeliveryDate(dateString); // If it's a string, set it directly
-    }
-  };
-
-  // Handle Time change
-  const onDeliveryTimeChange = (time: Dayjs | null, timeString: string | string[]) => {
-    if (Array.isArray(timeString)) {
-      setDeliveryTime(timeString[0]); // Take the first value if it's an array
-    } else {
-      setDeliveryTime(timeString); // If it's a string, set it directly
-    }
-  };
+  const onMealChange = (value: string) => setMeal(value);
+  const onExtrasChange = (value: string[]) => setExtras(value);
+  const onDietaryChange = (value: string[]) => setDietary(value);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
@@ -66,43 +42,30 @@ const OrderMeal = () => {
             </Select>
           </Form.Item>
 
-          {/* Meal Customization */}
-          <Form.Item label="Customize Your Meal" name="extras">
+      
+
+          {/* Dietary Preferences */}
+          <Form.Item label="Dietary Preferences" name="dietary">
             <Select
               mode="multiple"
-              placeholder="Select extras (e.g., extra toppings, sauces)"
-              onChange={onExtrasChange}
+              placeholder="Select dietary preferences"
+              onChange={onDietaryChange}
             >
-              <Option value="extraCheese">Extra Cheese</Option>
-              <Option value="spicySauce">Spicy Sauce</Option>
-              <Option value="extraVegetables">Extra Vegetables</Option>
-              <Option value="glutenFree">Gluten-Free</Option>
+              <Option value="vegetarian">Vegetarian</Option>
+              <Option value="vegan">Vegan</Option>
+              <Option value="gluten_free">Gluten-Free</Option>
+              <Option value="nut_free">Nut-Free</Option>
             </Select>
           </Form.Item>
 
-          {/* Delivery Date */}
-          <Form.Item label="Delivery Date" name="deliveryDate" rules={[{ required: true, message: 'Please select a delivery date!' }]}>
-            <DatePicker
-              onChange={onDeliveryDateChange}
-              disabledDate={(current) => current && current.isBefore(dayjs(), 'day')} // Use Dayjs methods for comparison
-              placeholder="Select delivery date"
-              format="YYYY-MM-DD"
-            />
-          </Form.Item>
+      
 
-          {/* Delivery Time */}
-          <Form.Item label="Delivery Time" name="deliveryTime" rules={[{ required: true, message: 'Please select a delivery time!' }]}>
-            <TimePicker
-              onChange={onDeliveryTimeChange}
-              format="HH:mm"
-              placeholder="Select delivery time"
-            />
-          </Form.Item>
+  
 
           {/* Submit Button */}
           <Form.Item>
             <Space direction="horizontal" size="middle" className="w-full">
-            <button type="submit" className="w-full p-3 bg-[#F37975] rounded-sm text-white font-bold" >
+              <button type="submit" className="w-full p-3 bg-[#F37975] rounded-sm text-white font-bold">
                 Place Order
               </button>
             </Space>

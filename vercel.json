@@ -1,0 +1,6 @@
+{
+    "buildCommand": "next build",
+    "framework": "nextjs",
+    "devCommand": "next dev"
+  }
+   

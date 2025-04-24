@@ -6,14 +6,35 @@ import { Button, Input, Form } from "antd"
 import { MailOutlined, FacebookFilled, GoogleOutlined } from "@ant-design/icons"
 import Link from "next/link"
 import styles from "@/app/styles.module.css"
+import { useAppDispatch } from "@/redux/hooks"
+import { useLoginMutation } from "@/redux/feature/auth/authApi"
+import { setUser, TUser } from "@/redux/feature/auth/authSlice"
+import { verifyToken } from "@/utils/verifyToken"
+import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
 const Login=() =>{
   const [loading, setLoading] = useState(false)
-
-  const onFinish = async (values: any) => {
+const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [login] = useLoginMutation();
+  const onFinish = async (data: any) => {
     setLoading(true)
     try {
       // Handle login logic here
-      console.log("Success:", values)
+      console.log("Success:", data)
+      const userInfo = {
+        email: data.email,
+        password: data.password,
+      };
+      const res = await login(userInfo).unwrap();
+      setLoading(true)
+      const user = verifyToken(res.data.accessToken) as TUser;
+    //   console.log("dispatchUser", user);
+      dispatch(setUser({ user: user, token: res.data.accessToken }));
+      setLoading(false)
+      toast.success(res?.message);
+      router.push("/");
+      if (loading) return <p>Loading...</p>;
     } catch (error) {
       console.error("Error:", error)
     } finally {

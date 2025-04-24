@@ -1,15 +1,20 @@
+"use client"
 import Link from "next/link";
 import React from "react";
 import logo from "@/asset/logo.png";
 import { MapPinHouse, FolderCog } from "lucide-react";
 import Image from "next/image";
+import { useAppSelector } from "@/redux/hooks";
+import { selectCurrentUser } from "@/redux/feature/auth/authSlice";
 const DashboardLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
   // const role = "user";
-  const isCustomer = false;
+  const user = useAppSelector(selectCurrentUser)
+  // console.log(user);
+  const isCustomer = user?.role==="customer"
   return (
     <div className="flex ">
       {/* Sidebar */}

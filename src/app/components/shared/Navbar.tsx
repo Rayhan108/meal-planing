@@ -9,20 +9,31 @@ import { Drawer } from "antd";
 import Image from "next/image";
 import logo from "@/asset/logo.png";
 import style from "@/app/styles.module.css";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { logout, selectCurrentUser } from "@/redux/feature/auth/authSlice";
+import toast from "react-hot-toast";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState(true);
+ 
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [kidsClubDropdownOpen, setKidsClubDropdownOpen] = useState(false);
   // const [kidsClubMobileDropdownOpen, setKidsClubMobileDropdownOpen] =
   //   useState(false);
   const pathname = usePathname();
-  const role = "user";
-  const isCustomer = role.startsWith("customer");
+  const router = useRouter();
+  const user = useAppSelector(selectCurrentUser);
+ 
+  const isCustomer = user?.role==="customer";
   const showDrawer = () => setOpen(true);
   const onClose = () => setOpen(false);
-
+// console.log(isCustomer);
+  const dispatch = useAppDispatch();
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push('/login');
+    toast.success("Logout Success");
+  };
   // Handle clicks outside the dropdowns
   useEffect(() => {
     function handleClickOutside(event: any) {
@@ -92,7 +103,7 @@ export default function Navbar() {
           {!user && (
             <Link href="/login">
               <button
-                onClick={() => setUser(!user)}
+              
                 className="h-12 rounded-full bg-[#F37975] font-bold px-8 text-lg hover:bg-[#e57373] text-white"
               >
                 Log In
@@ -120,7 +131,7 @@ export default function Navbar() {
             
                   <div className="border-t border-gray-200 my-1"></div>
                   <button
-                    onClick={() => setUser(!user)}
+                    onClick={() => handleLogout()}
                     className={`py-3 w-[100px] md:w-[120px] flex gap-1 items-center justify-center font-bold rounded-full border-none bg-white text-[#f08080] hover:bg-white/90 ${style.fontJosefin}`}
                   >
                     Logout
@@ -200,7 +211,7 @@ export default function Navbar() {
             <div className="flex justify-center items-center gap-3">
   {user ? (
     <button
-      onClick={() => setUser(false)} // Set to false to log out
+      onClick={() => handleLogout}
       className={`py-3 w-[100px] md:w-[120px] flex gap-1 items-center justify-center font-bold rounded-full border-none bg-white text-[#f08080] hover:bg-white/90 ${style.fontJosefin}`}
     >
       Logout

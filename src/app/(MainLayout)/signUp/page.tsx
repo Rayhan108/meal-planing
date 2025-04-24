@@ -5,12 +5,16 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import styles from "@/app/styles.module.css"
+import { useRegisterUserMutation } from "@/redux/feature/auth/authApi"
+import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
 const SignUpPage=()=> {
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
+    phone: "",
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,11 +24,28 @@ const SignUpPage=()=> {
       [name]: value,
     }))
   }
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const [registerUser] = useRegisterUserMutation();
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     // Handle form submission logic here
     console.log("Form submitted:", formData)
+    try{
+      const userInfo = {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          phone:formData.phone
+        };
+      //   console.log("user info", userInfo);
+        const res = await registerUser(userInfo).unwrap();
+          // console.log(res);
+        toast.success(res?.message);
+        router.push("/login");
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   }catch(err :any){
+      toast.error(err?.data?.message) 
+      // console.log(err);
+   }
   }
 
   return (
@@ -38,29 +59,16 @@ const SignUpPage=()=> {
           </label>
           <input
             type="text"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
+            id="name"
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-pink-200"
             required
           />
         </div>
 
-        <div className="space-y-2">
-          <label htmlFor="lastName" className="block text-gray-500">
-            Last Name
-          </label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-pink-200"
-            required
-          />
-        </div>
+    
 
         <div className="space-y-2">
           <label htmlFor="email" className="block text-gray-500">
@@ -91,7 +99,20 @@ const SignUpPage=()=> {
             required
           />
         </div>
-
+        <div className="space-y-2">
+          <label htmlFor="lastName" className="block text-gray-500">
+           Phone
+          </label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-pink-200"
+            required
+          />
+        </div>
         <div className={`text-sm text-gray-700 space-y-2 ${styles.fontInter}`}>
           <p>Be sure to use the email address associated with your fair
           <br/>Any questions? Contact your sales representative</p>

@@ -27,7 +27,7 @@ export default function Navbar() {
   const isCustomer = user?.role==="customer";
   const showDrawer = () => setOpen(true);
   const onClose = () => setOpen(false);
-// console.log(isCustomer);
+console.log(user);
   const dispatch = useAppDispatch();
   const handleLogout = () => {
     dispatch(logout());

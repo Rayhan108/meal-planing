@@ -7,15 +7,15 @@ type Role = keyof typeof roleBasedPrivateRoutes;
 const authRoutes = ["/login", "/register"];
 
 const roleBasedPrivateRoutes = {
-  user: [/^\/user/, /^\/create-shop/],
-  admin: [/^\/admin/],
+  customer: [/^\/trackOrder/, /^\/orderMeal/,/^\/managePreferences/],
+  mealProvider: [/^\/mealMenu/,/^\/viewOrder/,/^\/respondOrder/],
 };
 
 export const middleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
   const userInfo = await getCurrentUser();
-
+console.log("from middleware==>",userInfo);
   if (!userInfo) {
     if (authRoutes.includes(pathname)) {
       return NextResponse.next();
@@ -47,5 +47,6 @@ export const config = {
     "/trackOrder",
     "/viewOrder",
     "/respondOrder",
+    "/managePreferences"
   ],
 };

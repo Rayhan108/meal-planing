@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 
 export const getCurrentUser = async () => {
   const accessToken = (await cookies()).get("accessToken")?.value;
+  console.log("access token decode=>",accessToken);
   let decodedData = null;
 
   if (accessToken) {

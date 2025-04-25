@@ -76,6 +76,15 @@ const DashboardLayout = ({
                   <span>Respond To Order</span>
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/mealMenu"
+                  className="flex items-center p-2 text-white  hover:bg-orange-700 rounded-md"
+                >
+                  <FolderCog className="h-5 w-5 mr-3" />
+                  <span>Create Meal</span>
+                </Link>
+              </li>
             </ul>
           </nav>
         )}

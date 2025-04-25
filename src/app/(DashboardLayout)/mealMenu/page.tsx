@@ -5,38 +5,43 @@ import { Form, Input, Button, Select, Upload, notification, Space } from 'antd';
 import { UploadOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { RcFile } from 'antd/es/upload/interface';
 import Image from 'next/image';
+import { useCreateMenuMutation } from '@/redux/feature/order/orderApi';
+import toast from 'react-hot-toast';
 
 const { Option } = Select;
 
 const PostMealMenu = () => {
   const [form] = Form.useForm();
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
 
+const [createMenu]=useCreateMenuMutation();
 
   // Handle the form submission
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = async (values: any) => {
     console.log('Form values:', values);
+    try{
 
-    // Placeholder logic for handling form submission
-    // Normally, you would send this data to your API route for storage
-    // For now, we're just displaying a success notification
-    notification.success({
-      message: 'Meal Menu Posted',
-      description: 'Your meal has been successfully added to the menu!',
-      icon: <CheckCircleOutlined style={{ color: '#52c41a' }} />,
-    });
+      //   console.log("user info", userInfo);
+        const res = await createMenu(values).unwrap();
+          // console.log(res);
+        toast.success(res?.message);
+    
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   }catch(err :any){
+      toast.error(err?.data?.message) 
+      // console.log(err);
+   }
+  
 
-    // Simulate a delay for form submission
     setTimeout(() => {
-      form.resetFields(); // Reset the form fields after successful submission
+      form.resetFields(); 
     }, 1000);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-lg mx-auto p-8 bg-white rounded-lg shadow-md">
+    <div className="min-h-screen w-full  flex items-center justify-center bg-gray-50">
+      <div className="w-1/2  mx-auto p-8 bg-white rounded-lg shadow-md">
         <h2 className="text-3xl font-extrabold text-center mb-8 text-[#F37975]">Post Meal Menu</h2>
 
         <Form form={form} onFinish={handleSubmit} layout="vertical">
@@ -45,11 +50,15 @@ const PostMealMenu = () => {
             <Input placeholder="Enter meal name" />
           </Form.Item>
 
-          {/* Meal Description */}
-          <Form.Item label="Description" name="description" rules={[{ required: true, message: 'Please input a description!' }]}>
-            <Input.TextArea placeholder="Enter meal description" rows={4} />
+     
+          {/* availability */}
+          <Form.Item label="Availability" name="availability" rules={[{ required: true, message: 'Please select this!' }]}>
+            <Select placeholder="Select cuisine type" allowClear>
+              <Option value="in stock">In Stock</Option>
+              <Option value="out of stock">Out Of Stock</Option>
+             
+            </Select>
           </Form.Item>
-
           {/* Cuisine Type */}
           <Form.Item label="Cuisine Type" name="cuisineType" rules={[{ required: true, message: 'Please select the cuisine type!' }]}>
             <Select placeholder="Select cuisine type" allowClear>
@@ -67,27 +76,7 @@ const PostMealMenu = () => {
             <Input placeholder="Enter price" type="number" />
           </Form.Item>
 
-          {/* Image Upload */}
-          <Form.Item label="Upload Meal Image" name="image">
-            {/* <Upload
-              beforeUpload={handleImageUpload}
-              showUploadList={false}
-              onChange={({ file }) => {
-                if (file.status === 'done') {
-                  setImageUrl(URL.createObjectURL(file.originFileObj)); // Display the image preview
-                }
-              }}
-            >
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </Upload> */}
-            {/* {imageUrl && (
-              <Image
-                src={imageUrl}
-                alt="meal-preview"
-                style={{ width: '100%', marginTop: '10px' }}
-              />
-            )} */}
-          </Form.Item>
+
 
           {/* Submit Button */}
           <Form.Item>

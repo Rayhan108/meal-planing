@@ -1,29 +1,62 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import { useState } from 'react';
-import { Form, Input, Select, notification, Space } from 'antd';
+import { Form, Input, Select, notification, Space, DatePicker, TimePicker } from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons';
+import React from 'react';
+
+import dayjs, { Dayjs } from 'dayjs';
+import { useCreateOrderMutation, useGetMenuQuery } from '@/redux/feature/order/orderApi';
+import toast from 'react-hot-toast';
 
 const { Option } = Select;
 
 const OrderMeal = () => {
+  const [createOrder] = useCreateOrderMutation();
+  const { data } = useGetMenuQuery(undefined);
   const [meal, setMeal] = useState<string | undefined>();
   const [extras, setExtras] = useState<string[]>([]);
-  const [dietary, setDietary] = useState<string[]>([]);
+  const [deliveryDate, setDeliveryDate] = useState<string | undefined>();
+  const [deliveryTime, setDeliveryTime] = useState<string | undefined>();
 
-  const onMealChange = (value: string) => setMeal(value);
-  const onExtrasChange = (value: string[]) => setExtras(value);
-  const onDietaryChange = (value: string[]) => setDietary(value);
+  const onMealChange = (value: string) => {
+    setMeal(value);
+  };
+
+  const onExtrasChange = (value: string[]) => {
+    setExtras(value);
+  };
+
+  const onDeliveryDateChange = (date: Dayjs | null, dateString: string | string[]) => {
+    if (Array.isArray(dateString)) {
+      setDeliveryDate(dateString[0]);
+    } else {
+      setDeliveryDate(dateString);
+    }
+  };
+
+  const onDeliveryTimeChange = (time: Dayjs | null, timeString: string | string[]) => {
+    if (Array.isArray(timeString)) {
+      setDeliveryTime(timeString[0]);
+    } else {
+      setDeliveryTime(timeString);
+    }
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSubmit = (values: any) => {
+  const handleSubmit = async (values: any) => {
     console.log('Order Details:', values);
-
-    notification.success({
-      message: 'Order Placed',
-      description: 'Your meal order has been successfully placed!',
-      icon: <CheckCircleOutlined style={{ color: '#52c41a' }} />,
-    });
+    const info ={
+      meal : values.meal,
+      dietaryPreference:values.dietaryPreference
+    }
+    try {
+      const res = await createOrder(info).unwrap();
+      toast.success(res?.message);
+    } catch (err: any) {
+      toast.error(err?.data?.message);
+    }
   };
 
   return (
@@ -33,39 +66,88 @@ const OrderMeal = () => {
 
         <Form onFinish={handleSubmit} layout="vertical">
           {/* Meal Selection */}
-          <Form.Item label="Select a Meal" name="meal" rules={[{ required: true, message: 'Please select a meal!' }]}>
+          <Form.Item
+            label="Select a Meal"
+            name="meal"
+            rules={[{ required: true, message: 'Please select a meal!' }]}
+          >
             <Select placeholder="Select a meal" onChange={onMealChange}>
-              <Option value="Keto Chicken Salad">Keto Chicken Salad</Option>
-              <Option value="Vegan Buddha Bowl">Vegan Buddha Bowl</Option>
-              <Option value="Gluten-Free Pasta">Gluten-Free Pasta</Option>
-              <Option value="Family-Friendly Pizza">Family-Friendly Pizza</Option>
+              {data?.data?.map((meal: { mealName: string }, idx: number) => (
+                <Select.Option key={idx} value={meal.mealName}>
+                  {meal.mealName}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
 
-      
-
-          {/* Dietary Preferences */}
-          <Form.Item label="Dietary Preferences" name="dietary">
-            <Select
-              mode="multiple"
-              placeholder="Select dietary preferences"
-              onChange={onDietaryChange}
-            >
+          {/* Dietary Preference */}
+          <Form.Item
+            label="Dietary Preference"
+            name="dietaryPreference"
+            rules={[{ required: true, message: 'Please select your dietary preference!' }]}
+          >
+            <Select placeholder="Select dietary preference">
+              <Option value="none">None</Option>
               <Option value="vegetarian">Vegetarian</Option>
               <Option value="vegan">Vegan</Option>
-              <Option value="gluten_free">Gluten-Free</Option>
-              <Option value="nut_free">Nut-Free</Option>
+              <Option value="gluten-free">Gluten-Free</Option>
+              <Option value="keto">Keto</Option>
+              <Option value="halal">Halal</Option>
             </Select>
           </Form.Item>
 
-      
+          {/* Meal Customization */}
+          <Form.Item label="Customize Your Meal" name="extras">
+            <Select
+              mode="multiple"
+              placeholder="Select extras (e.g., extra toppings, sauces)"
+              onChange={onExtrasChange}
+            >
+              <Option value="extraCheese">Extra Cheese</Option>
+              <Option value="spicySauce">Spicy Sauce</Option>
+              <Option value="extraVegetables">Extra Vegetables</Option>
+              <Option value="glutenFree">Gluten-Free</Option>
+            </Select>
+          </Form.Item>
 
-  
+          <div className="flex justify-between gap-4">
+            {/* Delivery Date */}
+            <Form.Item
+              label="Delivery Date"
+              name="deliveryDate"
+              rules={[{ required: true, message: 'Please select a delivery date!' }]}
+              className="w-1/2"
+            >
+              <DatePicker
+                onChange={onDeliveryDateChange}
+                disabledDate={(current) => current && current.isBefore(dayjs(), 'day')}
+                placeholder="Select delivery date"
+                format="YYYY-MM-DD"
+              />
+            </Form.Item>
+
+            {/* Delivery Time */}
+            <Form.Item
+              label="Delivery Time"
+              name="deliveryTime"
+              rules={[{ required: true, message: 'Please select a delivery time!' }]}
+              className="w-1/2"
+            >
+              <TimePicker
+                onChange={onDeliveryTimeChange}
+                format="HH:mm"
+                placeholder="Select delivery time"
+              />
+            </Form.Item>
+          </div>
 
           {/* Submit Button */}
           <Form.Item>
             <Space direction="horizontal" size="middle" className="w-full">
-              <button type="submit" className="w-full p-3 bg-[#F37975] rounded-sm text-white font-bold">
+              <button
+                type="submit"
+                className="w-full p-3 bg-[#F37975] rounded-sm text-white font-bold"
+              >
                 Place Order
               </button>
             </Space>

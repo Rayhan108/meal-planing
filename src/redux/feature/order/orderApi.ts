@@ -9,8 +9,18 @@ const orderApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
     }),
+    createMenu: builder.mutation({
+      query: (userInfo) => ({
+        url: "/providers/menu",
+        method: "POST",
+        body: userInfo,
+      }),
+    }),
     getOrders: builder.query({
-      query: () => "/customers/orders",
+      query: () => "/providers/orders",
+    }),
+    getMenu: builder.query({
+      query: () => "/providers",
     }),
 
     singleOrder: builder.query({
@@ -26,5 +36,7 @@ const orderApi = baseApi.injectEndpoints({
 export const {
   useCreateOrderMutation,
   useGetOrdersQuery,
-  useSingleOrderQuery
+  useSingleOrderQuery,
+  useCreateMenuMutation,
+  useGetMenuQuery
 } = orderApi;

@@ -15,6 +15,7 @@ const { Option } = Select;
 const OrderMeal = () => {
   const [createOrder] = useCreateOrderMutation();
   const { data } = useGetMenuQuery(undefined);
+  console.log(data);
   const [meal, setMeal] = useState<string | undefined>();
   const [extras, setExtras] = useState<string[]>([]);
   const [deliveryDate, setDeliveryDate] = useState<string | undefined>();
@@ -51,8 +52,10 @@ const OrderMeal = () => {
       meal : values.meal,
       dietaryPreference:values.dietaryPreference
     }
+    console.log(info);
     try {
       const res = await createOrder(info).unwrap();
+      console.log(res);
       toast.success(res?.message);
     } catch (err: any) {
       toast.error(err?.data?.message);

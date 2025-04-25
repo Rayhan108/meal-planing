@@ -56,8 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${grandHotel.variable} ${rozhaOne.variable} ${poppins.variable} ${jost.variable} ${inter.variable} ${josefinSans.variable} antialiased`}
-      >
+        className={`${grandHotel.variable} ${rozhaOne.variable} ${poppins.variable} ${jost.variable} ${inter.variable} ${josefinSans.variable} antialiased`}>
        <StoreProvider>
 
             <AntdRegistry>

@@ -2,10 +2,13 @@
 
 import { Input, Form,  notification, Space } from 'antd';
 import { UserOutlined, MailOutlined, PhoneOutlined} from '@ant-design/icons';
+import { useAppSelector } from '@/redux/hooks';
+import { selectCurrentUser } from '@/redux/feature/auth/authSlice';
 
 const CustomerProfile = () => {
   const [form] = Form.useForm();
-
+const user = useAppSelector(selectCurrentUser)
+console.log(user);
   // Dummy user data (you can replace this with data from your database)
   const userData = {
     name: "John Doe",

@@ -5,7 +5,9 @@ import logo from '@/asset/logo.png';
 import { MapPinHouse, FolderCog } from 'lucide-react';
 import Image from 'next/image';
 import { useAppSelector } from '@/redux/hooks';
-import {  selectCurrentUser } from '@/redux/feature/auth/authSlice';
+import {  selectCurrentToken, selectCurrentUser } from '@/redux/feature/auth/authSlice';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 
 const DashboardLayout = ({
@@ -14,18 +16,18 @@ const DashboardLayout = ({
   children: React.ReactNode;
 }>) => {
   const user = useAppSelector(selectCurrentUser);
-  // const token = useAppSelector(selectCurrentToken);
-  // const router = useRouter();
+  const token = useAppSelector(selectCurrentToken);
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     router.push('/login');
-  //   }
-  // }, [token, router]);
+  useEffect(() => {
+    if (!token) {
+      router.push('/login');
+    }
+  }, [token, router]);
 
-  // if (!token) {
-  //   return null; // or a loading spinner
-  // }
+  if (!token) {
+    return null; // or a loading spinner
+  }
 
   const isCustomer = user?.role === 'customer';
 

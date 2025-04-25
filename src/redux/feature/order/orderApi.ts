@@ -19,6 +19,9 @@ const orderApi = baseApi.injectEndpoints({
     getOrders: builder.query({
       query: () => "/providers/orders",
     }),
+    getmyOrders: builder.query({
+      query: () => "/customers/orders",
+    }),
     getMenu: builder.query({
       query: () => "/providers",
     }),
@@ -38,5 +41,6 @@ export const {
   useGetOrdersQuery,
   useSingleOrderQuery,
   useCreateMenuMutation,
-  useGetMenuQuery
+  useGetMenuQuery,
+  useGetmyOrdersQuery
 } = orderApi;

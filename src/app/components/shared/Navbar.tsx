@@ -83,12 +83,12 @@ console.log(user);
           FIND MEALS
           </Link>
 
-          <Link
+{    isCustomer &&      <Link
             href="/orderMeal"
             className={`md:text-sm text-xs xl:text-xl  text-white hover:text-white/80 ${style.fontInter}`}
           >
             ORDER MEAL
-          </Link>
+          </Link>}
           <Link
           href={isCustomer ? "/trackOrder" : "/viewOrder"}
             className={`md:text-sm text-xs xl:text-xl  text-white hover:text-white/80 ${style.fontInter}`}

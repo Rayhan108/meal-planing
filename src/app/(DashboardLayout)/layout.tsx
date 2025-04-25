@@ -26,7 +26,7 @@ const DashboardLayout = ({
   }, [token, router]);
 
   if (!token) {
-    return null; // or a loading spinner
+    return null; 
   }
 
   const isCustomer = user?.role === 'customer';

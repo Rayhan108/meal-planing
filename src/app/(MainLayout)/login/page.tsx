@@ -12,6 +12,7 @@ import { setUser, TUser } from "@/redux/feature/auth/authSlice"
 import { verifyToken } from "@/utils/verifyToken"
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
+import setAccessToken from "@/Action/setToken"
 const Login=() =>{
   const [loading, setLoading] = useState(false)
 const router = useRouter();
@@ -28,6 +29,7 @@ const router = useRouter();
       };
       const res = await login(userInfo).unwrap();
       setLoading(true)
+      setAccessToken(res.data.accessToken);
       const user = verifyToken(res.data.accessToken) as TUser;
     //   console.log("dispatchUser", user);
       dispatch(setUser({ user: user, token: res.data.accessToken }));
